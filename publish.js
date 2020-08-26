@@ -1,6 +1,7 @@
 const http = require('http');
 const querystring = require('querystring')
 const fs = require('fs');
+const child_process = require('child_process')
 
 var archiver = require('archiver');
 
@@ -79,5 +80,9 @@ const req = http.request(options, (res) => {
 archive.pipe(req)
 archive.on('end', () => {
   req.end();
+  const client_id = 'Iv1.5f77bd0e081f2e25';
+  const redirect_uri = 'http://localhost:8081/auth?id=123';
+  const state = 'ghj123'
+  const url = `https://github.com/login/oauth/authorize?client_id=${encodeURIComponent(client_id)}&redirect_uri=${encodeURIComponent(redirect_uri)}&scope=${encodeURIComponent('read:user')}&state=${encodeURIComponent(state)}`
+  child_process.exec(`start ${url}`)
 })
-
